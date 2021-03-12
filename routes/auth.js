@@ -3,9 +3,9 @@ const router = express.Router();
 const url = require('url');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const generalTools = require('../tools/general-tools');
 
-
-router.get('/registerPage', (req, res) => {
+router.get('/registerPage', generalTools.sessionChecker, (req, res) => {
     res.render('auth/register', {msg: req.query.msg})
 });
 
@@ -58,7 +58,7 @@ router.post('/register', (req, res) => {
 });
 
 
-router.get('/loginPage', (req, res) => {
+router.get('/loginPage', generalTools.sessionChecker, (req, res) => {
     res.render('auth/login', {msg: req.query.msg})
 });
 
@@ -108,7 +108,9 @@ router.post('/login', (req, res) => {
                  }
             }));
 
-            res.render('dashboard', {user})
+            req.session.user = user;
+
+            res.redirect('/api/user/dashboard');
         });
     });
 });

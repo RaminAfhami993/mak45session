@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/dashboard', (req, res) => {
-    res.render('dashboard', {user: user})
+    req.session.a = 1;
+
+    res.render('dashboard', {user: req.session.user})
 });
 
 module.exports = router;
